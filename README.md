@@ -12,4 +12,5 @@ docker push yourOSERepo:5000/openshift/spark
 
 # Create a template using, injecting relevant variables
 oc process -f template.yaml -v SPARK_IMAGE=yourOSERepo:5000/openshift/spark > template.json
+
 oc create -f template.json 

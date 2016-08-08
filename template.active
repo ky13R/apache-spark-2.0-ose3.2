@@ -1,0 +1,151 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "labels": {
+                    "name": "spark-master-mmf8"
+                },
+                "name": "spark-master-mmf8"
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "port": 7077,
+                        "protocol": "TCP",
+                        "targetPort": 7077
+                    }
+                ],
+                "selector": {
+                    "name": "spark-master-mmf8"
+                }
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "labels": {
+                    "name": "spark-master-mmf8"
+                },
+                "name": "spark-master-mmf8-webui"
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "port": 8080,
+                        "protocol": "TCP",
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "name": "spark-master-mmf8"
+                }
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "DeploymentConfig",
+            "metadata": {
+                "name": "spark-master-mmf8"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "name": "spark-master-mmf8"
+                },
+                "strategy": {
+                    "type": "Rolling"
+                },
+                "template": {
+                    "metadata": {
+                        "labels": {
+                            "name": "spark-master-mmf8"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "/start-master",
+                                    "spark-master-mmf8"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "SPARK_MASTER_PORT",
+                                        "value": "7077"
+                                    },
+                                    {
+                                        "name": "SPARK_MASTER_WEBUI_PORT",
+                                        "value": "8080"
+                                    }
+                                ],
+                                "image": "172.30.12.93:5000/openshift/spark",
+                                "name": "spark-master-mmf8",
+                                "ports": [
+                                    {
+                                        "containerPort": 7077,
+                                        "protocol": "TCP"
+                                    },
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "DeploymentConfig",
+            "metadata": {
+                "name": "spark-worker-6m6u"
+            },
+            "spec": {
+                "replicas": 3,
+                "selector": {
+                    "name": "spark-worker-6m6u"
+                },
+                "strategy": {
+                    "type": "Rolling"
+                },
+                "template": {
+                    "metadata": {
+                        "labels": {
+                            "name": "spark-worker-6m6u"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "/start-worker",
+                                    "spark://spark-master-mmf8:7077"
+                                ],
+                                "image": "172.30.12.93:5000/openshift/spark",
+                                "name": "spark-worker-6m6u"
+                            }
+                        ]
+                    }
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    }
+                ]
+            }
+        }
+    ]
+}

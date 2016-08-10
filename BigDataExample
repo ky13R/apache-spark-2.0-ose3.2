@@ -1,0 +1,14 @@
+## The following uses a 750G NFS volume mounted to the spark master pod (/mnt) that has been populated with Wikidata (available through AWS if wanting to use the same dataset as the following example)
+
+# On the spark master pod
+spark-shell
+
+# set variables (example)
+sc.setLogLevel("INFO")
+val pagecounts = sc.textFile("/mnt/wikistats/pagecounts")
+
+# process 100 records
+pagecounts.take(100)
+
+# process everything in a directory
+pagecounts.count

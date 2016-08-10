@@ -27,3 +27,8 @@ ENV SPARK_USER=root
 
 ADD common.sh start-master start-worker /
 RUN chmod a+rx /common.sh /start-master /start-worker
+
+EXPOSE 4040
+EXPOSE 6066
+EXPOSE 7077
+

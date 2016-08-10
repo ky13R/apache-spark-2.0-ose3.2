@@ -1,4 +1,4 @@
-FROM 172.30.12.93:5000/openshift/rhel7:latest
+FROM 172.30.34.177:5000/openshift/rhel7:latest
 
 COPY epel-release-latest-7.noarch.rpm $HOME 
 RUN rpm -ivh epel-release-latest-7.noarch.rpm && yum install -y tar java && \
@@ -13,6 +13,7 @@ RUN cd /opt && \
 # Worker startup if it does not exist. instead of making SPARK_HOME
 # world writable, create SPARK_HOME/work.
 RUN mkdir /opt/spark/work && chmod a+rwx /opt/spark/work
+RUN chmod -R 777 /opt/spark
 
 # when the containers are not run w/ uid 0, the uid may not map in
 # /etc/passwd and it may not be possible to modify things like

@@ -74,7 +74,7 @@ objects:
       type: Rolling
     triggers:
       - type: ConfigChange
-    replicas: 3
+    replicas: 5
     selector:
       name: ${WORKER_NAME}
     template:

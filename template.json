@@ -1,0 +1,151 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "labels": {
+                    "name": "spark-master-tpos"
+                },
+                "name": "spark-master-tpos"
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "port": 7077,
+                        "protocol": "TCP",
+                        "targetPort": 7077
+                    }
+                ],
+                "selector": {
+                    "name": "spark-master-tpos"
+                }
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "labels": {
+                    "name": "spark-master-tpos"
+                },
+                "name": "spark-master-tpos-webui"
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "port": 8080,
+                        "protocol": "TCP",
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "name": "spark-master-tpos"
+                }
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "DeploymentConfig",
+            "metadata": {
+                "name": "spark-master-tpos"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "name": "spark-master-tpos"
+                },
+                "strategy": {
+                    "type": "Rolling"
+                },
+                "template": {
+                    "metadata": {
+                        "labels": {
+                            "name": "spark-master-tpos"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "/start-master",
+                                    "spark-master-tpos"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "SPARK_MASTER_PORT",
+                                        "value": "7077"
+                                    },
+                                    {
+                                        "name": "SPARK_MASTER_WEBUI_PORT",
+                                        "value": "8080"
+                                    }
+                                ],
+                                "image": "172.30.34.177:5000/openshift/spark-portsadded",
+                                "name": "spark-master-tpos",
+                                "ports": [
+                                    {
+                                        "containerPort": 7077,
+                                        "protocol": "TCP"
+                                    },
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "DeploymentConfig",
+            "metadata": {
+                "name": "spark-worker-hwdb"
+            },
+            "spec": {
+                "replicas": 5,
+                "selector": {
+                    "name": "spark-worker-hwdb"
+                },
+                "strategy": {
+                    "type": "Rolling"
+                },
+                "template": {
+                    "metadata": {
+                        "labels": {
+                            "name": "spark-worker-hwdb"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "/start-worker",
+                                    "spark://spark-master-tpos:7077"
+                                ],
+                                "image": "172.30.34.177:5000/openshift/spark-portsadded",
+                                "name": "spark-worker-hwdb"
+                            }
+                        ]
+                    }
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    }
+                ]
+            }
+        }
+    ]
+}

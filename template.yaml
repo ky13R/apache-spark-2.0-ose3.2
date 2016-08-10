@@ -22,6 +22,34 @@ objects:
 - kind: Service
   apiVersion: v1
   metadata:
+    name: ${MASTER_NAME}-4040
+    labels:
+      name: ${MASTER_NAME}
+  spec:
+    ports:
+      - protocol: TCP
+        port: 4040
+        targetPort: 4040
+    selector:
+      name: ${MASTER_NAME}
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: ${MASTER_NAME}-6066
+    labels:
+      name: ${MASTER_NAME}
+  spec:
+    ports:
+      - protocol: TCP
+        port: 6066
+        targetPort: 6066
+    selector:
+      name: ${MASTER_NAME}
+
+- kind: Service
+  apiVersion: v1
+  metadata:
     name: ${MASTER_NAME}-webui
     labels:
       name: ${MASTER_NAME}

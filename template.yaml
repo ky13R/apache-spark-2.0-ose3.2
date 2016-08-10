@@ -92,6 +92,10 @@ objects:
                 protocol: TCP
               - containerPort: 8080
                 protocol: TCP
+              - containerPort: 4040
+                protocol: TCP
+              - containerPort: 6066
+                protocol: TCP
 
 - kind: DeploymentConfig
   apiVersion: v1

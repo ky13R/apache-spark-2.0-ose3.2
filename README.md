@@ -1,7 +1,7 @@
 # ky13 (kritchie@redhat.com)
 ## IMPORTANT: Change the FROM line in the Dockerfile to the location of your OSE OS image before running the following commands
 ## This template has the replicas set to 1 spark master and 5 spark workers
-## Be sure to run 'oadm policy add-scc-role-to-user anyuid -z default' if you want to run containers as root user
+## Be sure to run 'oadm policy add-scc-to-user anyuid -z default' if you want to run containers as root user
 
 # Build the docker image
 docker build .

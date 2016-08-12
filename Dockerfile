@@ -1,4 +1,4 @@
-FROM 172.30.34.177:5000/openshift/rhel7:latest
+FROM rhel7:latest
 
 COPY epel-release-latest-7.noarch.rpm $HOME 
 RUN rpm -ivh epel-release-latest-7.noarch.rpm && yum install -y tar java && \
